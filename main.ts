@@ -14,9 +14,12 @@ const LINE =
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 const target = join(outDir, "entry.txt");
 
-// Gate: UTF-8 text, 1-200 characters, not only whitespace.
+// Gate: UTF-8 text, 1-200 characters, not only whitespace, and a single
+// line (the judge compares one-liners; a stray newline would break the
+// entry's shape even if the character count still passed).
+const MAX_CHARS = 200;
 const chars = [...LINE].length;
-if (chars < 1 || chars > 200 || !LINE.trim()) {
+if (chars < 1 || chars > MAX_CHARS || !LINE.trim() || LINE.includes("\n")) {
   throw new Error(`entry line fails the gate: ${chars} characters`);
 }
 
